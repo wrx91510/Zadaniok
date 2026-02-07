@@ -17,13 +17,15 @@ class TaskRepository(
         runCatching { json.decodeFromString<List<Task>>(raw) }.getOrElse { emptyList() }
     }
 
-    suspend fun addTask(title: String, description: String) {
+    suspend fun addTask(title: String, description: String, dueAt: Long?) {
         val current = tasksFlow.first()
         val newTask = Task(
             id = System.currentTimeMillis(),
             title = title.trim(),
-            description = description.trim()
+            description = description.trim(),
+            dueAt = dueAt
         )
+
         save(current + newTask)
     }
 
